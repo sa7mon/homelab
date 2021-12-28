@@ -1,0 +1,40 @@
+version: "2"
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    hostname: pihole
+    domainname: pihole.docker
+    restart: unless-stopped
+    shm_size: '2gb'
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "9080:80/tcp"
+    environment:
+      - TZ='America/Chicago'
+      - WEBPASSWORD="${WEBPASSWORD}"
+#      - DNS1='1.1.1.1'
+#      - DNS2='8.8.8.8'
+      - VIRTUAL_HOST='dns.home.lan'
+#      - PIHOLE_DNS_='1.1.1.1;8.8.8.8;8.8.4.4'
+    networks:
+      - homelab
+    volumes:
+      - pihole:/etc/pihole/
+      - pihole_dnsmasq:/etc/dnsmasq.d/
+#    dns:
+#      - 127.0.0.1
+#      - 1.1.1.1
+
+networks:
+  homelab:
+    external: true
+#    ipv4_address: 172.18.0.3
+
+volumes:
+  pihole:
+    external: true
+  pihole_dnsmasq:
+    external: true
+
