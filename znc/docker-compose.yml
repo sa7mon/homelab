@@ -1,0 +1,29 @@
+version: "3"
+services:
+  znc:
+    image: znc:latest
+    container_name: znc
+    restart: unless-stopped
+    ports:
+#      - "6689:6689/tcp" # Admin port
+      - "6690:6690/tcp"  # IRC port
+    healthcheck:
+      test: "wget --no-verbose --tries=1 --spider http://localhost:6689/ || exit 1"
+      interval: 20s
+      timeout: 5s
+    networks:
+      - homelab
+    volumes:
+      - znc:/znc-data
+    dns:
+      - 172.18.0.1
+      - pihole
+      - 8.8.8.8
+
+networks:
+  homelab:
+    external: true
+
+volumes:
+  znc:
+    external: true
