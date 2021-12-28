@@ -1,0 +1,50 @@
+version: '3.4'
+services:
+  miniflux:
+    image: miniflux/miniflux:latest
+    container_name: miniflux
+    restart: always
+    networks:
+      - homelab
+    healthcheck:
+      test: ["CMD", "/usr/bin/miniflux", "-healthcheck", "auto"]
+      interval: 10s
+      timeout: 10s
+    depends_on:
+      - miniflux_db
+    environment:
+      - RUN_MIGRATIONS=0
+      - CREATE_ADMIN=1
+      - POLLING_FREQUENCY=30
+      - DATABASE_URL=postgres://miniflux:${POSTGRES_PASSWORD}@miniflux_db/miniflux?sslmode=disable
+      - ADMIN_USERNAME=dan
+      - ADMIN_PASSWORD="${ADMIN_PASSWORD}"
+      - "BASE_URL=http://docker-vm.home.lan"
+    dns:
+      - 172.18.0.1
+      - pihole
+
+  miniflux_db:
+    image: postgres:13
+    restart: always
+    container_name: miniflux_db
+    hostname: miniflux_db
+    networks:
+      - homelab
+    environment:
+      - POSTGRES_USER=miniflux
+      - POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "miniflux"]
+      interval: 10s
+      start_period: 30s
+      timeout: 60s
+    volumes:
+      - miniflux_miniflux-db:/var/lib/postgresql/data
+
+volumes:
+  miniflux_miniflux-db:
+    external: true
+networks:
+  homelab:
+    external: true
