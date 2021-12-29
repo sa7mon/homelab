@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  craigsfeed:
+    build: ./src/
+    container_name: craigsfeed
+    restart: unless-stopped
+    networks:
+      - homelab
+    command: ["-url", "https://minneapolis.craigslist.org/search/sss?query=keyboard&excats=20-24-24-1-23-1-1-3-1-9-10-1-1-1-2-2-8-1-1-1-1-1-4-1-3-1-3-1-1-1-1-7-1-1-1-1-1-3-1-1-1-1-1-1-1-1-2-2-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-1-3-1-1-1-1-1-2-1&sort=rel&purveyor-input=all", "-interval", "60"]
+    dns:
+      - 172.18.0.1
+      - pihole
+
+networks:
+  homelab:
+    external: true

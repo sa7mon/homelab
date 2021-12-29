@@ -2,3 +2,6 @@
 	path = netbox/netbox-docker
 	url = https://github.com/netbox-community/netbox-docker
 	branch = release
+[submodule "craigsfeed/src"]
+	path = craigsfeed/src
+	url = https://github.com/sa7mon/craigsfeed
