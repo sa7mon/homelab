@@ -1,0 +1,30 @@
+version: "3.3"
+
+services:
+  cloudflare_ddns_share:
+    image: oznu/cloudflare-ddns
+    container_name: cloudflare_ddns_share
+    restart: unless-stopped
+    dns:
+      - 172.18.0.1
+      - pihole
+      - 8.8.8.8
+    environment:
+      - API_KEY=${API_KEY}
+      - ZONE=${CF_ZONE}
+      - SUBDOMAIN=${SUBDOMAIN_A}
+      - PROXIED=true
+
+  cloudflare_ddns_wghome:
+    image: oznu/cloudflare-ddns
+    container_name: cloudflare_ddns_wg
+    restart: unless-stopped
+    dns:
+      - 172.18.0.1
+      - pihole
+      - 8.8.8.8
+    environment:
+      - API_KEY=${API_KEY}
+      - ZONE=${CF_ZONE}
+      - SUBDOMAIN=${SUBDOMAIN_B}
+      - PROXIED=false
