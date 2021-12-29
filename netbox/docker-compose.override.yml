@@ -1,0 +1,39 @@
+version: '3.4'
+services:
+  netbox:
+    ports:
+      - 8000:8080
+    healthcheck:
+      test: "curl --fail -I http://localhost:8080/api/status/ || exit 1"
+      interval: 10s
+      timeout: 3s
+    dns:
+      - 172.18.0.1
+      - pihole
+    networks:
+      - homelab
+  netbox-worker:
+    healthcheck:
+      test: ""
+    networks:
+      - homelab
+  postgres:
+    networks:
+      - homelab
+  redis:
+    networks:
+      - homelab
+  redis-cache:
+    networks:
+      - homelab
+networks:
+  homelab:
+    external: true
+
+volumes:
+  netbox-media-files:
+    external: true
+  netbox-postgres-data:
+    external: true
+  netbox-redis-data:
+    external: true
