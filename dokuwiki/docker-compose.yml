@@ -1,0 +1,25 @@
+version: '2'
+services:
+  dokuwiki:
+    image: 'docker.io/bitnami/dokuwiki:20200729'
+    container_name: dokuwiki
+    restart: unless-stopped
+    environment:
+      - DOKUWIKI_FULL_NAME=dan
+      - DOKUWIKI_USERNAME=dan
+      - DOKUWIKI_PASSWORD=${PASSWORD}
+      - DOKUWIKI_EMAIL=dan@salmon.cat
+      - DOKUWIKI_WIKI_NAME=homelab
+    volumes:
+      - dokuwiki_data:/bitnami/dokuwiki
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    external: true
+
+volumes:
+  dokuwiki_data:
+    external: true
+
