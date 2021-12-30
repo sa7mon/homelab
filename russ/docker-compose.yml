@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  russ:
+    build: ./src/
+    container_name: russ
+    restart: unless-stopped
+    healthcheck:
+      test: "curl --fail -I http://localhost:8000/health || exit 1"
+      interval: 10s
+      timeout: 3s
+    networks:
+      - homelab
+    dns:
+      - 172.18.0.1
+      - pihole
+
+networks:
+  homelab:
+    external: true

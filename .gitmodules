@@ -5,3 +5,6 @@
 [submodule "craigsfeed/src"]
 	path = craigsfeed/src
 	url = https://github.com/sa7mon/craigsfeed
+[submodule "russ/src"]
+	path = russ/src
+	url = https://github.com/sa7mon/russ.git
