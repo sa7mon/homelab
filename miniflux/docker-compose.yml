@@ -1,11 +1,11 @@
 version: '3.4'
 services:
   miniflux:
-    image: miniflux/miniflux:latest
+    image: miniflux/miniflux:2.0.38
     container_name: miniflux
-    restart: always
     networks:
       - homelab
+    restart: always
     healthcheck:
       test: ["CMD", "/usr/bin/miniflux", "-healthcheck", "auto"]
       interval: 10s
@@ -21,16 +21,15 @@ services:
       - ADMIN_PASSWORD="${ADMIN_PASSWORD}"
       - "BASE_URL=http://docker-vm.home.lan"
     dns:
-      - 172.18.0.1
-      - pihole
+      - 10.10.1.162
 
   miniflux_db:
     image: postgres:13
     restart: always
-    container_name: miniflux_db
-    hostname: miniflux_db
     networks:
       - homelab
+    container_name: miniflux_db
+    hostname: miniflux_db
     environment:
       - POSTGRES_USER=miniflux
       - POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"

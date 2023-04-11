@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   wallabag:
-    image: wallabag/wallabag:latest
+    image: wallabag/wallabag:2.5.2
     container_name: wallabag
     restart: always
     networks:
@@ -15,9 +15,6 @@ services:
       - wallabag-images:/var/www/wallabag/web/assets/images
     environment:
       - "SYMFONY__ENV__DOMAIN_NAME=http://bookmarks.home.lan"
-    dns:
-      - 172.18.0.1
-      - pihole
 
 volumes:
   wallabag-data:

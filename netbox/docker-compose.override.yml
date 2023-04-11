@@ -2,33 +2,37 @@ version: '3.4'
 services:
   netbox:
     container_name: netbox
-    ports:
-      - 8000:8080
+#    ports:
+#      - 8000:8080
     healthcheck:
       test: "curl --fail -I http://localhost:8080/api/status/ || exit 1"
       interval: 10s
       timeout: 3s
+    restart: unless-stopped
     dns:
-      - 172.18.0.1
-      - pihole
+      - 10.10.1.162
     networks:
       - homelab
   netbox-worker:
     container_name: netbox_worker
+    restart: unless-stopped
     healthcheck:
       test: ""
     networks:
       - homelab
   postgres:
     container_name: netbox_pg
+    restart: unless-stopped
     networks:
       - homelab
   redis:
     container_name: netbox_redis
+    restart: unless-stopped
     networks:
       - homelab
   redis-cache:
     container_name: netbox_redis-cache
+    restart: unless-stopped
     networks:
       - homelab
 networks:
