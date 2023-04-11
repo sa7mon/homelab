@@ -1,0 +1,52 @@
+version: '3.3'
+
+services:
+  app:
+    image: fireflyiii/core:version-6.0.6
+    restart: always
+    volumes:
+      - firefly_iii_upload:/var/www/html/storage/upload
+    env_file: .env
+    ports:
+      - '6080:8080'
+    depends_on:
+      - db
+    networks:
+      - homelab
+    container_name: fireflyiii
+  db:
+    image: mariadb
+    hostname: fireflyiiidb
+    container_name: fireflyiiidb
+    restart: always
+    env_file: .env
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=firefly
+      - MYSQL_PASSWORD="${MYSQL_PASSWORD}"
+      - MYSQL_DATABASE=firefly
+    networks:
+      - homelab
+    volumes:
+      - firefly_iii_db:/var/lib/mysql
+  fidi:
+    image: fireflyiii/data-importer:latest
+    container_name: firefly_importer
+    restart: always
+    env_file: .fidi.env
+    ports:
+      - 8081:8080
+    networks:
+      - homelab
+    depends_on:
+      - app
+    environment:
+      - FIREFLY_III_URI=http://fireflyiii:8080
+
+volumes:
+   firefly_iii_upload:
+   firefly_iii_db:
+
+networks:
+   homelab:
+     external: true
