@@ -38,6 +38,25 @@
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
 
+  hardware.printers = {
+    ensurePrinters = [
+      {
+        name = "HP_Laserjet_4200";
+        location = "Basement";
+        deviceUri = "socket://10.10.1.130";
+        model = "drv:///sample.drv/laserjet.ppd";
+        ppdOptions = {
+          PageSize = "Letter";
+          Resolution = "600dpi";
+          InputSlot = "Default";
+          Duplex = "DuplexNoTumble";
+          Duplexer = "True";
+        };
+      }
+    ];
+    ensureDefaultPrinter = "HP_Laserjet_4200";
+  };
+
   users.defaultUserShell = pkgs.zsh;
 
   users.users.dan = {
