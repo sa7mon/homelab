@@ -22,3 +22,5 @@ even though my session is still running. Can't do sudo because the system can't 
 - curl'd my laptop's public key and only configured openssh and a new user with the `initialPassword` option set 
 - after a `nixos-rebuild switch`, `passwd` and set a real password
 
+
+https://rollo-main.b-cdn.net/driver-dl/beta/rollo-driver-raspberrypi-beta.zip

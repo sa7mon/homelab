@@ -34,6 +34,9 @@
   services.printing.allowFrom = [
     "10.10.1.0/24"
   ];
+  services.printing.drivers = [
+    (pkgs.callPackage ./rollo-driver.nix {})
+  ];
   services.avahi.enable = true;
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
@@ -51,6 +54,15 @@
           InputSlot = "Default";
           Duplex = "DuplexNoTumble";
           Duplexer = "True";
+        };
+      }
+      {
+        name = "Rollo_LabelPrinter";
+        location = "Office";
+        deviceUri = "usb://Printer/ThermalPrinter?serial=588U2824739";
+        model = "rollo/rollo-thermal.ppd";
+        ppdOptions = {
+          PageSize = "w288h432";
         };
       }
     ];
