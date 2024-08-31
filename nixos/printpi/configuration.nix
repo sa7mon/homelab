@@ -25,21 +25,28 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
-  services.printing.listenAddresses = [
-    "0.0.0.0:631"
-  ];
-  services.printing.logLevel = "debug";
-  services.printing.browsing = true;
-  services.printing.allowFrom = [
-    "10.10.1.0/24"
-  ];
-  services.printing.drivers = [
-    (pkgs.callPackage ./rollo-driver.nix {})
-  ];
-  services.avahi.enable = true;
-  services.avahi.publish.enable = true;
-  services.avahi.publish.userServices = true;
+  services.printing = {
+    enable = true;
+    listenAddresses = [
+      "0.0.0.0:631"
+    ];
+    logLevel = "debug";
+    browsing = true;
+    allowFrom = [
+      "10.10.1.0/24"
+    ];
+    drivers = [
+      (pkgs.callPackage ./rollo-driver.nix {})
+    ];
+    defaultShared = true;
+  };
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+    openFirewall = true;
+    publish.enable = true;
+    publish.userServices = true;
+  };
 
   hardware.printers = {
     ensurePrinters = [
@@ -62,6 +69,7 @@
         deviceUri = "usb://Printer/ThermalPrinter?serial=588U2824739";
         model = "rollo/rollo-thermal.ppd";
         ppdOptions = {
+          printer-is-shared = "true";
           PageSize = "w288h432";
         };
       }
@@ -98,7 +106,7 @@
   # Open ports in the firewall.
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 631 ];
-  networking.firewall.allowedUDPPorts = [ 5353 ];
+  networking.firewall.allowedUDPPorts = [ 631 5353 ];
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
